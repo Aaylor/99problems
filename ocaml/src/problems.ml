@@ -345,16 +345,8 @@ end
 (* Problem 026 *) 
 module Problem026 = struct
 
-  let extract nb rlist =
-    let f_acc elem acc = elem :: acc in
-    let rec aux nb acc f_acc = function
-      | [] -> acc
-      | x :: xs when nb = 1 -> aux nb (f_acc [x] acc) f_acc xs
-      | x :: xs ->
-        let next_f_acc acc = f_acc (x :: acc) in
-        aux nb (aux (nb - 1) acc next_f_acc xs) f_acc xs
-    in aux nb []
-
+  (* write here *)
+  
 end
 
 

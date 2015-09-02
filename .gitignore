@@ -1,4 +1,8 @@
 
+# OCaml
+*.cm*
+*.o
+*.cache
 
 # Scala
 scala/target
