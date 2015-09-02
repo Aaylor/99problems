@@ -29,7 +29,11 @@ object Problem002 {
 /* Problem 003 */
 object Problem003 {
 
-  /* write here */
+  def nth[A](l : List[A], n : Int) : A = l match {
+    case x :: _ if n == 0 => x
+    case _ :: tail        => nth(tail, n - 1)
+    case _                => throw new NoSuchElementException
+  }
 
 }
 
@@ -37,7 +41,10 @@ object Problem003 {
 /* Problem 004 */
 object Problem004 {
 
-  /* write here */
+  def length[A](l : List[A]) : Int = l match {
+    case Nil => 0
+    case _ :: tail => 1 + length(tail)
+  }
 
 }
 
@@ -45,7 +52,13 @@ object Problem004 {
 /* Problem 005 */
 object Problem005 {
 
-  /* write here */
+  def rev[A](l : List[A]) = {
+    def aux[A](acc : List[A], l : List[A]) : List[A] = l match {
+      case Nil => acc
+      case x :: tail => aux(x :: acc, tail)
+    }
+    aux(Nil, l)
+  }
 
 }
 
@@ -53,7 +66,9 @@ object Problem005 {
 /* Problem 006 */
 object Problem006 {
 
-  /* write here */
+  def palindrome[A](l : List[A]) = {
+    l == Problem005.rev(l)
+  }
 
 }
 
@@ -61,15 +76,34 @@ object Problem006 {
 /* Problem 007 */
 object Problem007 {
 
-  /* write here */
-
+  def flatten(l : List[Any]) : List[Any] = l match {
+    case Nil => Nil
+    case (x : List[_]) :: tail => flatten(x) ::: flatten(tail)
+    case x :: tail => x :: flatten(tail)
+  }
+  
 }
 
 
 /* Problem 008 */
 object Problem008 {
 
-  /* write here */
+  def compress[A](l : List[A]) : List[A] = {
+    def aux[A](acc : List[A], l : List[A], currentElement : A) : List[A] =
+      l match {
+        case Nil =>
+          Problem005.rev(acc)
+        case x :: tail =>
+          if (x == currentElement)
+            aux(acc, tail, currentElement)
+          else
+            aux(x :: acc, tail, x)
+      }
+    l match {
+      case Nil => Nil
+      case x :: tail => aux(List(x), tail, x)
+    }
+  }
 
 }
 

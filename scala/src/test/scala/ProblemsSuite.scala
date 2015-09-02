@@ -53,7 +53,19 @@ class Problem002Spec extends FlatSpec {
 /* Problem 003 Specification */
 class Problem003Spec extends FlatSpec {
 
-  /* write here */
+  "nth" should "throw NoSuchElementexception when n < 0 || n > length(list)" in {
+    intercept[NoSuchElementException] {
+      Problem003.nth(List(1, 2, 3), -42)
+    }
+
+    intercept[NoSuchElementException] {
+      Problem003.nth(List(1, 2, 3), 4)
+    }
+  }
+
+  it should "returns the third element" in {
+    assert(Problem003.nth(List(1, 2, 3, 4), 2) === 3)
+  }
 
 }
 
@@ -61,7 +73,13 @@ class Problem003Spec extends FlatSpec {
 /* Problem 004 Specification */
 class Problem004Spec extends FlatSpec {
 
-  /* write here */
+  "length" should "returns 0 on empty list" in {
+    assert(Problem004.length(Nil) === 0)
+  }
+
+  it should "return 4 in four-element list" in {
+    assert(Problem004.length(List(1, 2, 3, 4)) === 4)
+  }
 
 }
 
@@ -69,31 +87,66 @@ class Problem004Spec extends FlatSpec {
 /* Problem 005 Specification */
 class Problem005Spec extends FlatSpec {
 
-  /* write here */
+  "rev" should "returns the empty list on empty list" in {
+    assert(Problem005.rev(Nil) === Nil)
+  }
 
+  it should "returns the reversed list" in {
+    assert(Problem005.rev(List(1, 2, 3, 4, 5)) === List(5, 4, 3, 2, 1))
+  }
+  
 }
 
 
 /* Problem 006 Specification */
 class Problem006Spec extends FlatSpec {
 
-  /* write here */
+  "palidrome" should "returns true on empty list" in {
+    assert(Problem006.palindrome(Nil))
+  }
 
+  it should "returns false on non palindrome" in {
+    assert(!Problem006.palindrome(List(1, 2, 3, 2, 4)))
+  }
+
+  it should "returns true on palindrome" in {
+    assert(Problem006.palindrome(List(1, 2, 3, 2, 1)))
+  }
+ 
 }
 
 
 /* Problem 007 Specification */
 class Problem007Spec extends FlatSpec {
 
-  /* write here */
+  "flatten" should "returns empty list on empty list" in {
+    assert(Problem007.flatten(Nil) === Nil)
+  }
 
+  it should "returns flattened list" in {
+    val fl = Problem007.flatten(List(List(1, 1), 2, List(3, List(5, 8))))
+    assert (fl === List(1, 1, 2, 3, 5, 8))
+  }
+  
 }
 
 
 /* Problem 008 Specification */
 class Problem008Spec extends FlatSpec {
 
-  /* write here */
+  "compress" should "returns empty list on empty list" in {
+    assert(Problem008.compress(Nil) === Nil)
+  }
+
+  it should "returns the compressed list" in {
+    val l = List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+    assert(Problem008.compress(l) === List('a, 'b, 'c, 'a, 'd, 'e))
+  }
+
+  it should "returns a compressed list" in {
+    val l = List('a, 'b, 'c, 'a, 'd, 'e)
+    assert(Problem008.compress(l) === l)
+  }
 
 }
 
