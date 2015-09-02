@@ -24,7 +24,21 @@ let test_problem_001 =
 let test_problem_002 =
   let open Problem002 in
   let tests = [
+    "last_two empty list" >:: (fun _ ->
+        assert_equal (last_two []) None
+      );
 
+    "last_two singleton list" >:: (fun _ ->
+        assert_equal (last_two [1]) None
+      );
+
+    "last_two two elements list" >:: (fun _ ->
+        assert_equal (last_two [1; 2]) (Some (1, 2))
+      );
+
+    "last_two n elements list (n > 2)" >:: (fun _ ->
+        assert_equal (last_two [1; 2; 3; 4; 5; 6; 41; 42]) (Some (41, 42))
+      );
   ]
   in
   if tests = [] then None else Some ("Problem002" >::: tests)
@@ -33,7 +47,17 @@ let test_problem_002 =
 let test_problem_003 =
   let open Problem003 in
   let tests = [
+    "at empty list" >:: (fun _ ->
+        assert_equal (at 42 []) None
+      );
 
+    "at non empty list fail" >:: (fun _ ->
+        assert_equal (at 42 [1; 2; 3]) None
+      );
+
+    "at non empty list success" >:: (fun _ ->
+        assert_equal (at 2 [1; 2; 3]) (Some 2)
+      )
   ]
   in
   if tests = [] then None else Some ("Problem003" >::: tests)
@@ -42,7 +66,13 @@ let test_problem_003 =
 let test_problem_004 =
   let open Problem004 in
   let tests = [
+    "length empty list" >:: (fun _ ->
+        assert_equal (length []) 0
+      );
 
+    "length non empty list" >:: (fun _ ->
+        assert_equal (length [1; 2; 3; 4; 5]) 5
+      )
   ]
   in
   if tests = [] then None else Some ("Problem004" >::: tests)
@@ -51,7 +81,13 @@ let test_problem_004 =
 let test_problem_005 =
   let open Problem005 in
   let tests = [
+    "rev empty list" >:: (fun _ ->
+        assert_equal (rev []) []
+      );
 
+    "rev non empty list" >:: (fun _ ->
+        assert_equal (rev [1; 2; 3; 4]) [4; 3; 2; 1]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem005" >::: tests)
@@ -60,7 +96,21 @@ let test_problem_005 =
 let test_problem_006 =
   let open Problem006 in
   let tests = [
+    "palindrome empty list" >:: (fun _ ->
+        assert_bool "should be true" (palindrome [])
+      );
 
+    "palindrome singleton list" >:: (fun _ ->
+        assert_bool "should be true" (palindrome [])
+      );
+
+    "palindrome success" >:: (fun _ ->
+        assert_bool "should be true" (palindrome [1; 2; 3; 2; 1])
+      );
+
+    "palindrome failure" >:: (fun _ ->
+        assert_bool "should be false" (not (palindrome [1; 2; 3; 2; 4]))
+      )
   ]
   in
   if tests = [] then None else Some ("Problem006" >::: tests)
@@ -69,7 +119,22 @@ let test_problem_006 =
 let test_problem_007 =
   let open Problem007 in
   let tests = [
+    "flatten empty list" >:: (fun _ ->
+        assert_equal (flatten []) []
+      );
 
+    "flatten singleton one" >:: (fun _ ->
+        assert_equal (flatten [One 1]) [1]
+      );
+
+    "flatten singleton many" >:: (fun _ ->
+        assert_equal (flatten [Many [One 1]]) [1]
+      );
+
+    "flatten" >:: (fun _ ->
+        let t = [One 1; Many [One 2; Many [One 3; One 4 ]; One 5]] in
+        assert_equal (flatten t) [1; 2; 3; 4; 5]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem007" >::: tests)
@@ -78,7 +143,14 @@ let test_problem_007 =
 let test_problem_008 =
   let open Problem008 in
   let tests = [
+    "compress empty" >:: (fun _ ->
+        assert_equal (compress []) []
+      );
 
+    "compress list" >:: (fun _ ->
+        let t = [1; 1; 1; 1; 2; 3; 3; 1; 1; 4; 5; 5; 5; 5] in
+        assert_equal (compress t) [1; 2; 3; 1; 4; 5]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem008" >::: tests)
@@ -87,7 +159,15 @@ let test_problem_008 =
 let test_problem_009 =
   let open Problem009 in
   let tests = [
+    "pack empty" >:: (fun _ ->
+        assert_equal (pack []) []
+      );
 
+    "pack list" >:: (fun _ ->
+        let t = [1; 1; 1; 1; 2; 3; 3; 1; 1; 4; 5; 5; 5; 5] in
+        assert_equal (pack t)
+          [[1; 1; 1; 1]; [2]; [3; 3]; [1; 1]; [4]; [5; 5; 5; 5]]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem009" >::: tests)
@@ -96,7 +176,15 @@ let test_problem_009 =
 let test_problem_010 =
   let open Problem010 in
   let tests = [
+    "encode empty" >:: (fun _ ->
+        assert_equal (encode []) []
+      );
 
+    "encode list" >:: (fun _ ->
+        let t = [1; 1; 1; 1; 2; 3; 3; 1; 1; 4; 5; 5; 5; 5] in
+        assert_equal (encode t)
+          [(4, 1); (1, 2); (2, 3); (2, 1); (1, 4); (4, 5)]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem010" >::: tests)
@@ -105,7 +193,15 @@ let test_problem_010 =
 let test_problem_011 =
   let open Problem011 in
   let tests = [
+    "encode empty" >:: (fun _ ->
+        assert_equal (encode []) []
+      );
 
+    "encode list" >:: (fun _ ->
+        let t = [1; 1; 1; 1; 2; 3; 3; 1; 1; 4; 5; 5; 5; 5] in
+        assert_equal (encode t)
+          [Many (4, 1); One 2; Many (2, 3); Many (2, 1); One 4; Many (4, 5)]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem011" >::: tests)
@@ -114,7 +210,16 @@ let test_problem_011 =
 let test_problem_012 =
   let open Problem012 in
   let tests = [
+    "decode empty" >:: (fun _ ->
+        assert_equal (decode []) []
+      );
 
+    "decode list" >:: (fun _ ->
+        let t =
+          [Many (4, 1); One 2; Many (2, 3); Many (2, 1); One 4; Many (4, 5)]
+        in
+        assert_equal (decode t) [1; 1; 1; 1; 2; 3; 3; 1; 1; 4; 5; 5; 5; 5]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem012" >::: tests)
@@ -123,7 +228,15 @@ let test_problem_012 =
 let test_problem_013 =
   let open Problem013 in
   let tests = [
+    "encode empty" >:: (fun _ ->
+        assert_equal (encode []) []
+      );
 
+    "encode list" >:: (fun _ ->
+        let t = [1; 1; 1; 1; 2; 3; 3; 1; 1; 4; 5; 5; 5; 5] in
+        assert_equal (encode t)
+          [Many (4, 1); One 2; Many (2, 3); Many (2, 1); One 4; Many (4, 5)]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem013" >::: tests)
@@ -132,7 +245,13 @@ let test_problem_013 =
 let test_problem_014 =
   let open Problem014 in
   let tests = [
+    "duplicate empty" >:: (fun _ ->
+        assert_equal (duplicate []) []
+      );
 
+    "duplicate list" >:: (fun _ ->
+        assert_equal (duplicate [1; 2; 3; 4]) [1; 1; 2; 2; 3; 3; 4; 4]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem014" >::: tests)
@@ -141,7 +260,14 @@ let test_problem_014 =
 let test_problem_015 =
   let open Problem015 in
   let tests = [
+    "replicate empty" >:: (fun _ ->
+        assert_equal (replicate [] 42) []
+      );
 
+    "replicate list" >:: (fun _ ->
+        assert_equal (replicate [1; 2; 3] 4)
+          [1; 1; 1; 1; 2; 2; 2; 2; 3; 3; 3; 3]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem015" >::: tests)
@@ -150,7 +276,14 @@ let test_problem_015 =
 let test_problem_016 =
   let open Problem016 in
   let tests = [
+    "drop empty" >:: (fun _ ->
+        assert_equal (drop [] 42) []
+      );
 
+    "drop list" >:: (fun _ ->
+        assert_equal (drop [1; 2; 3; 4; 5; 6; 7; 8; 9; 10] 3)
+          [1; 2; 4; 5; 7; 8; 10]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem016" >::: tests)
@@ -159,7 +292,23 @@ let test_problem_016 =
 let test_problem_017 =
   let open Problem017 in
   let tests = [
+    "drop empty" >:: (fun _ ->
+        assert_equal (split [] 42) ([], [])
+      );
 
+    "drop > list length" >:: (fun _ ->
+        assert_equal (split [1; 2; 3; 4; 5; 6; 7; 8; 9; 10] 11)
+          ([1; 2; 3; 4; 5; 6; 7; 8; 9; 10], [])
+      );
+
+    "drop list" >:: (fun _ ->
+        assert_equal (split [1; 2; 3; 4; 5; 6; 7; 8; 9; 10] 4)
+          ([1; 2; 3; 4], [5; 6; 7; 8; 9; 10])
+      );
+
+    "drop head empty" >:: (fun _ ->
+        assert_equal (split [1; 2; 3; 4] 0) ([], [1; 2; 3; 4])  
+      );
   ]
   in
   if tests = [] then None else Some ("Problem017" >::: tests)
@@ -168,7 +317,14 @@ let test_problem_017 =
 let test_problem_018 =
   let open Problem018 in
   let tests = [
+    "slice empty" >:: (fun _ ->
+        assert_equal (slice [] 0 0) []
+      );
 
+    "slice list" >:: (fun _ ->
+        assert_equal (slice [1; 2; 3; 4; 5; 6; 7; 8; 9; 10] 2 6)
+          [3; 4; 5; 6; 7]
+      );
   ]
   in
   if tests = [] then None else Some ("Problem018" >::: tests)
@@ -177,7 +333,19 @@ let test_problem_018 =
 let test_problem_019 =
   let open Problem019 in
   let tests = [
+    "rotate empty" >:: (fun _ ->
+        assert_equal (rotate [] 42) []
+      );
 
+    "rotate list 1" >:: (fun _ ->
+        assert_equal (rotate [1; 2; 3; 4; 5; 6; 7; 8] 3)
+          [4; 5; 6; 7; 8; 1; 2; 3]
+      );
+
+    "rotate list 2" >:: (fun _ ->
+        assert_equal (rotate [1; 2; 3; 4; 5; 6; 7; 8] (-2))
+          [7; 8; 1; 2; 3; 4; 5; 6]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem019" >::: tests)
@@ -186,7 +354,9 @@ let test_problem_019 =
 let test_problem_020 =
   let open Problem020 in
   let tests = [
-
+    "remove_at" >:: (fun _ ->
+        assert_equal (remove_at 1 [1; 2; 3; 4]) [1; 3; 4]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem020" >::: tests)
@@ -195,7 +365,13 @@ let test_problem_020 =
 let test_problem_021 =
   let open Problem021 in
   let tests = [
+    "insert_at" >:: (fun _ ->
+        assert_equal (insert_at 42 2 [1; 2; 3; 4]) [1; 2; 42; 3; 4]
+      );
 
+    "insert_at 0" >:: (fun _ ->
+        assert_equal (insert_at 42 0 [1; 2; 3; 4]) [42; 1; 2; 3; 4]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem021" >::: tests)
@@ -204,7 +380,13 @@ let test_problem_021 =
 let test_problem_022 =
   let open Problem022 in
   let tests = [
+    "range incr" >:: (fun _ ->
+        assert_equal (range (-3) 3) [-3; -2; -1; 0; 1; 2; 3]
+      );
 
+    "range decr" >:: (fun _ ->
+        assert_equal (range 3 (-3)) [3; 2; 1; 0; -1; -2; -3]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem022" >::: tests)
@@ -213,7 +395,11 @@ let test_problem_022 =
 let test_problem_023 =
   let open Problem023 in
   let tests = [
-
+    "rand_select" >:: (fun _ ->
+        let l = [1; 2; 3; 4; 5; 6; 7; 8; 9; 10] in
+        assert_bool "should be true"
+          List.(for_all (fun x -> exists (( = ) x) l) (rand_select l 3))
+      );
   ]
   in
   if tests = [] then None else Some ("Problem023" >::: tests)
@@ -222,7 +408,15 @@ let test_problem_023 =
 let test_problem_024 =
   let open Problem024 in
   let tests = [
+    "lotto" >:: (fun _ ->
+        let nb  = 6  in
+        let max = 49 in
+        let lotto = lotto_select nb max in
 
+        assert_equal nb (List.length lotto);
+        assert_bool "should be true"
+          (List.for_all (fun x -> x >= 1 && x <= 49) lotto);
+      );
   ]
   in
   if tests = [] then None else Some ("Problem024" >::: tests)
@@ -231,7 +425,14 @@ let test_problem_024 =
 let test_problem_025 =
   let open Problem025 in
   let tests = [
+    "permutation" >:: (fun _ ->
+        let l = [1; 2; 3] in
+        let p = permutation l in
 
+        assert_bool "should be true"
+          (p = [1; 2; 3] || p = [1; 3; 2] || p = [2; 1; 3] ||
+           p = [2; 3; 1] || p = [3; 1; 2] || p =[3; 2; 1])
+      )
   ]
   in
   if tests = [] then None else Some ("Problem025" >::: tests)

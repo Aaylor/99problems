@@ -61,7 +61,7 @@ end
 (* Problem 006 *) 
 module Problem006 = struct
 
-  let rev l = l = Problem005.rev l
+  let palindrome l = l = Problem005.rev l
 
 end
 
@@ -117,7 +117,7 @@ module Problem010 = struct
   let encode slist =
     let rec count acc current_count = function
       | []  -> acc
-      | [x] -> (current_count + 1, x) :: acc
+      | [x] -> (current_count, x) :: acc
       | x :: ((y :: _) as l) ->
         if x = y then count acc (current_count + 1) l
         else count ((current_count, x) :: acc) 1 l
@@ -137,7 +137,7 @@ module Problem011 = struct
     let to_rle c x = if c = 1 then One x else Many (c, x) in
     let rec count acc current_count = function
       | []  -> acc
-      | [x] -> to_rle (current_count + 1) x :: acc
+      | [x] -> to_rle current_count x :: acc
       | x :: ((y :: _) as l) ->
         if x = y then count acc (current_count + 1) l
         else count (to_rle current_count x :: acc) 1 l
@@ -176,7 +176,7 @@ module Problem013 = struct
     let to_rle c x = if c = 1 then One x else Many (c, x) in
     let rec count acc current_count = function
       | []  -> acc
-      | [x] -> to_rle (current_count + 1) x :: acc
+      | [x] -> to_rle current_count x :: acc
       | x :: ((y :: _) as l) ->
         if x = y then count acc (current_count + 1) l
         else count (to_rle current_count x :: acc) 1 l
