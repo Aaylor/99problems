@@ -441,7 +441,26 @@ let test_problem_025 =
 let test_problem_026 =
   let open Problem026 in
   let tests = [
+    "extract empty list" >:: (fun _ ->
+        assert_equal (extract 42 []) []
+      );
 
+    "extract correct" >:: (fun _ ->
+        assert_equal (extract 2 [1; 2; 3; 4])
+          [[3; 4]; [2; 4]; [2; 3]; [1; 4]; [1; 3]; [1; 2]]
+      );
+
+    "extract one" >:: (fun _ ->
+        assert_equal (extract 1 [1; 2; 3; 4]) [[4]; [3]; [2]; [1]]
+      );
+
+    "extract exact length" >:: (fun _ ->
+        assert_equal (extract 4 [1; 2; 3; 4]) [[1; 2; 3; 4]]
+      );
+
+    "extract > length" >:: (fun _ ->
+        assert_equal (extract 42 [1; 2; 3; 4]) []
+      )
   ]
   in
   if tests = [] then None else Some ("Problem026" >::: tests)
@@ -620,8 +639,38 @@ let test_problem_045 =
 
 let test_problem_046 =
   let open Problem046 in
+  let res =
+    List.map2 (fun (x, y) z -> (x, y, z))
+      [(false, false); (false, true); (true, false); (true, true)]
+  in
+  let a = "a" in
+  let b = "b" in
   let tests = [
+    "table2 var" >:: (fun _ ->
+        assert_equal (table2 a b (Var a))
+          (res [false; false; true; true])
+      );
 
+    "table2 var fail" >:: (fun _ ->
+        assert_raises (Unknown_var "c") (fun _ ->
+            ignore (table2 a b (Var "c"))
+          )
+      );
+
+    "table2 not" >:: (fun _ ->
+        assert_equal (table2 a b (Not (Var b)))
+          (res [true; false; true; false])
+      );
+
+    "table2 and" >:: (fun _ ->
+        assert_equal (table2 a b (And (Var a, Var b)))
+          (res [false; false; false; true])
+      );
+
+    "table2 or" >:: (fun _ ->
+        assert_equal (table2 a b (Or (Var a, Var b)))
+          (res [false; true; true; true])
+      )
   ]
   in
   if tests = [] then None else Some ("Problem046" >::: tests)
@@ -629,8 +678,40 @@ let test_problem_046 =
 
 let test_problem_047 =
   let open Problem047 in
+  let a, b, c = "a", "b", "c" in
+  let mk vars value result =
+   (List.map2 (fun x y -> (x, y)) vars value), result
+  in
   let tests = [
+    "generate" >:: (fun _ ->
+        let vars = [a; b] in
+        let g = generate vars (And (Var a, Var b)) in
+        assert_equal g [
+          mk vars [false; false] false;
+          mk vars [true; false]  false;
+          mk vars [false; true]  false;
+          mk vars [true; true]   true
+        ]
+      );
 
+    "generate" >:: (fun _ ->
+        let vars = [a; b; c] in
+        let expr =
+          (Or(And(Var a, Or(Var b, Var c)),
+              Or(And(Var a, Var b), And(Var a, Var c))))
+        in
+        let g = generate vars expr in
+        assert_equal g [
+          mk vars [false; false; false] false;
+          mk vars [true ; false; false] false;
+          mk vars [false; true ; false] false;
+          mk vars [true ; true ; false] true ;
+          mk vars [false; false; true ] false;
+          mk vars [true ; false; true ] true ;
+          mk vars [false; true ; true ] false;
+          mk vars [true ; true ; true ] true
+        ]
+      )
   ]
   in
   if tests = [] then None else Some ("Problem047" >::: tests)

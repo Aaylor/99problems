@@ -345,8 +345,20 @@ end
 (* Problem 026 *) 
 module Problem026 = struct
 
-  (* write here *)
-  
+  let extract n l =
+    let rec aux acc push n = function
+      | [] ->
+        acc
+
+      | x :: tail when n = 1 ->
+        aux (push [x] acc) push n tail
+
+      | x :: tail ->
+        let acc' = aux acc (fun xs -> push (x :: xs)) (n - 1) tail in
+        aux acc' push n tail
+    in
+    aux [] (fun x xs -> x :: xs) n l
+
 end
 
 
@@ -505,15 +517,64 @@ end
 (* Problem 046 *) 
 module Problem046 = struct
 
-  (* write here *)
+  type bool_expr =
+    | Var of string
+    | Not of bool_expr
+    | And of bool_expr * bool_expr
+    | Or of bool_expr * bool_expr
 
+  exception Unknown_var of string
+
+  let table2 var1 var2 expr =
+    let rec aux (v1, v2) expr =
+      let self = aux (v1, v2) in
+      match expr with
+      | Var x ->
+        if x = var1 then v1 else if x = var2 then v2 else raise (Unknown_var x)
+      | Not e' ->
+        not (self e')
+      | And (e1, e2) ->
+        self e1 && self e2
+      | Or (e1, e2) ->
+        self e1 || self e2
+    in
+    List.map (fun (v1, v2) -> (v1, v2, aux (v1, v2) expr))
+      [(false, false); (false, true); (true, false); (true, true)]
+  
 end
 
 
 (* Problem 047 *) 
 module Problem047 = struct
 
-  (* write here *)
+  (* The problem use lists... But a Map should have been used. *)
+  
+  type bool_expr =
+    | Var of string
+    | Not of bool_expr
+    | And of bool_expr * bool_expr
+    | Or of bool_expr * bool_expr
+  
+  let rec eval vars expr =
+    let self = eval vars in
+    match expr with
+    | Var x -> List.assoc x vars
+    | Not e -> not (self e)
+    | And (e1, e2) -> self e1 && self e2
+    | Or (e1, e2) -> self e1 || self e2
+
+  let rec generate_cases = function
+    | [] ->
+      []
+    | [x] ->
+      [[(x, false)]; [(x, true)]]
+    | x :: xs ->
+      List.fold_right (fun l acc ->
+          ((x, false) :: l) :: ((x, true) :: l) :: acc
+        ) (generate_cases xs) []
+
+  let generate vars expr =
+    List.map (fun cases -> (cases, eval cases expr)) (generate_cases vars)
 
 end
 
