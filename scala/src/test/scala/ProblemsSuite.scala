@@ -1,4 +1,3 @@
-
 package org.problems
 
 import org.scalatest._
@@ -94,14 +93,14 @@ class Problem005Spec extends FlatSpec {
   it should "returns the reversed list" in {
     assert(Problem005.rev(List(1, 2, 3, 4, 5)) === List(5, 4, 3, 2, 1))
   }
-  
+
 }
 
 
 /* Problem 006 Specification */
 class Problem006Spec extends FlatSpec {
 
-  "palidrome" should "returns true on empty list" in {
+  "palindrome" should "returns true on empty list" in {
     assert(Problem006.palindrome(Nil))
   }
 
@@ -112,7 +111,7 @@ class Problem006Spec extends FlatSpec {
   it should "returns true on palindrome" in {
     assert(Problem006.palindrome(List(1, 2, 3, 2, 1)))
   }
- 
+
 }
 
 
@@ -127,7 +126,7 @@ class Problem007Spec extends FlatSpec {
     val fl = Problem007.flatten(List(List(1, 1), 2, List(3, List(5, 8))))
     assert (fl === List(1, 1, 2, 3, 5, 8))
   }
-  
+
 }
 
 
@@ -154,7 +153,16 @@ class Problem008Spec extends FlatSpec {
 /* Problem 009 Specification */
 class Problem009Spec extends FlatSpec {
 
-  /* write here */
+  "pack" should "returns empty list on empty list" in {
+    assert(Problem009.pack(Nil) === Nil)
+  }
+
+  it should "returns the packed list" in {
+    val l = List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+    assert(Problem009.pack(l) ===
+      List(List('a, 'a, 'a, 'a), List('b), List('c, 'c),
+        List('a, 'a), List('d), List('e, 'e, 'e, 'e)))
+  }
 
 }
 
@@ -162,7 +170,15 @@ class Problem009Spec extends FlatSpec {
 /* Problem 010 Specification */
 class Problem010Spec extends FlatSpec {
 
-  /* write here */
+  "pack" should "returns empty list on empty list" in {
+    assert(Problem010.pack(Nil) === Nil)
+  }
+
+  it should "returns the packed list with correct number" in {
+    val l = List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+    assert(Problem010.pack(l) ===
+      List((4, 'a), (1, 'b), (2, 'c), (2, 'a), (1, 'd), (4, 'e)))
+  }
 
 }
 
@@ -170,7 +186,15 @@ class Problem010Spec extends FlatSpec {
 /* Problem 011 Specification */
 class Problem011Spec extends FlatSpec {
 
-  /* write here */
+  "pack" should "returns empty list on empty list" in {
+    assert(Problem011.pack(Nil) === Nil)
+  }
+
+  it should "returns the packed list with correct number" in {
+    val l = List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+    assert(Problem011.pack(l) ===
+      List((4, 'a), 'b, (2, 'c), (2, 'a), 'd, (4, 'e)))
+  }
 
 }
 

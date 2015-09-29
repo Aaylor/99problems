@@ -1,6 +1,4 @@
-
 package org.problems
-
 
 /* Problem 001 */
 object Problem001 {
@@ -81,7 +79,7 @@ object Problem007 {
     case (x : List[_]) :: tail => flatten(x) ::: flatten(tail)
     case x :: tail => x :: flatten(tail)
   }
-  
+
 }
 
 
@@ -89,20 +87,12 @@ object Problem007 {
 object Problem008 {
 
   def compress[A](l : List[A]) : List[A] = {
-    def aux[A](acc : List[A], l : List[A], currentElement : A) : List[A] =
+    def aux[A](acc : List[A], l : List[A]) : List[A] =
       l match {
-        case Nil =>
-          Problem005.rev(acc)
-        case x :: tail =>
-          if (x == currentElement)
-            aux(acc, tail, currentElement)
-          else
-            aux(x :: acc, tail, x)
+        case Nil         => acc.reverse
+        case (x :: tail) => aux(x :: acc, tail dropWhile (_ == x))
       }
-    l match {
-      case Nil => Nil
-      case x :: tail => aux(List(x), tail, x)
-    }
+    aux(Nil, l)
   }
 
 }
@@ -111,7 +101,12 @@ object Problem008 {
 /* Problem 009 */
 object Problem009 {
 
-  /* write here */
+  def pack[A](l : List[A]) : List[List[A]] = l match {
+    case Nil => Nil
+    case x :: tail =>
+      val (xs, tail) = l span (_ == x)
+      xs :: pack(tail)
+  }
 
 }
 
@@ -119,7 +114,21 @@ object Problem009 {
 /* Problem 010 */
 object Problem010 {
 
-  /* write here */
+  def dropWhileNb[A](l : List[A])(p : A => Boolean) = {
+    def aux(count : Int, l : List[A]) : Tuple2[Int,List[A]] = l match {
+      case Nil => (count, Nil)
+      case x :: _ if !p(x) => (count, l)
+      case x :: tail => aux(count + 1, tail)
+    }
+    aux(0, l)
+  }
+
+  def pack[A](l : List[A]) : List[(Int, A)] = l match {
+    case Nil => Nil
+    case x :: tail =>
+      val (count, tail) = dropWhileNb(l)(_ == x)
+      (count, x) :: pack(tail)
+  }
 
 }
 
@@ -127,8 +136,12 @@ object Problem010 {
 /* Problem 011 */
 object Problem011 {
 
-  /* write here */
-
+  def pack(l : List[Any]) : List[Any] = l match {
+    case Nil => Nil
+    case x :: tail =>
+      val (count, tail) = Problem010.dropWhileNb(l)(_ == x)
+      (if (count == 1) x else (count, x)) :: pack(tail)
+  }
 }
 
 
