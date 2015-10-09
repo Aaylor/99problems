@@ -202,7 +202,15 @@ class Problem011Spec extends FlatSpec {
 /* Problem 012 Specification */
 class Problem012Spec extends FlatSpec {
 
-  /* write here */
+  "decode" should "returns empty list on empty list" in {
+    assert(Problem012.decode(Nil) === Nil)
+  }
+
+  it should "returns the unpacked list" in {
+    val l = List((4, 'a), (1, 'b), (2, 'c), (2, 'a), (1, 'd), (4, 'e))
+    assert(Problem012.decode(l) ===
+      List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e))
+  }
 
 }
 
@@ -210,7 +218,15 @@ class Problem012Spec extends FlatSpec {
 /* Problem 013 Specification */
 class Problem013Spec extends FlatSpec {
 
-  /* write here */
+  "encodeDirect" should "returns empty list on empty list" in {
+    assert(Problem013.encodeDirect(Nil) === Nil)
+  }
+
+  it should "returns the packed list" in {
+    val l = List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+    assert(Problem013.encodeDirect(l) ===
+      List((4, 'a), (1, 'b), (2, 'c), (2, 'a), (1, 'd), (4, 'e)))
+  }
 
 }
 
@@ -218,7 +234,14 @@ class Problem013Spec extends FlatSpec {
 /* Problem 014 Specification */
 class Problem014Spec extends FlatSpec {
 
-  /* write here */
+  "duplicate" should "returns an empty list on empty list" in {
+    assert(Problem014.duplicate(Nil) === Nil)
+  }
+
+  it should "returns the list with all duplicated elements" in {
+    val l = List('a, 'b, 'c, 'd)
+    assert(Problem014.duplicate(l) === List('a, 'a, 'b, 'b, 'c, 'c, 'd, 'd))
+  }
 
 }
 
@@ -226,7 +249,15 @@ class Problem014Spec extends FlatSpec {
 /* Problem 015 Specification */
 class Problem015Spec extends FlatSpec {
 
-  /* write here */
+  "duplicateN" should "returns an empty list on empty list" in {
+    assert(Problem015.duplicateN(3, Nil) === Nil)
+  }
+
+  it should "returns the list with all duplicated elements" in {
+    val l = List('a, 'b, 'c, 'd)
+    assert(Problem015.duplicateN(3, l) ===
+      List('a, 'a, 'a, 'b, 'b, 'b, 'c, 'c, 'c, 'd, 'd, 'd))
+  }
 
 }
 
@@ -234,7 +265,14 @@ class Problem015Spec extends FlatSpec {
 /* Problem 016 Specification */
 class Problem016Spec extends FlatSpec {
 
-  /* write here */
+  "drop" should "returns an empty list on empty list" in {
+    assert(Problem016.drop(3, Nil) === Nil)
+  }
+
+  it should "returns the list with all duplicated elements" in {
+    val l = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+    assert(Problem016.drop(3, l) === List('a, 'b, 'd, 'e, 'g, 'h, 'j, 'k))
+  }
 
 }
 
@@ -242,7 +280,15 @@ class Problem016Spec extends FlatSpec {
 /* Problem 017 Specification */
 class Problem017Spec extends FlatSpec {
 
-  /* write here */
+  "split" should "returns an empty list on empty list" in {
+    assert(Problem017.split(3, Nil) === (Nil, Nil))
+  }
+
+  it should "returns the list with all duplicated elements" in {
+    val l = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+    assert(Problem017.split(3, l) ===
+      (List('a, 'b, 'c), List('d, 'e, 'f, 'g, 'h, 'i, 'j, 'k)))
+  }
 
 }
 
@@ -250,7 +296,18 @@ class Problem017Spec extends FlatSpec {
 /* Problem 018 Specification */
 class Problem018Spec extends FlatSpec {
 
-  /* write here */
+  "slice" should "returns empty list on empty list" in {
+    assert(Problem018.slice(21, 42, Nil) === Nil)
+  }
+
+  it should "returns empty list on invalid values" in {
+    assert(Problem018.slice(5, 10, List('a, 'b, 'c)) === Nil)
+  }
+
+  it should "returns the sliced list" in {
+    val l = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+    assert(Problem018.slice(3, 7, l) === List('d, 'e, 'f, 'g))
+  }
 
 }
 
@@ -258,7 +315,17 @@ class Problem018Spec extends FlatSpec {
 /* Problem 019 Specification */
 class Problem019Spec extends FlatSpec {
 
-  /* write here */
+  "rotate" should "do the rotation with positive number" in {
+    assert(
+      Problem019.rotate(3, List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)) ===
+      List('d, 'e, 'f, 'g, 'h, 'i, 'j, 'k, 'a, 'b, 'c))
+  }
+
+  it should "do the rotation with negative number" in {
+    assert(
+      Problem019.rotate(-2, List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)) ===
+      List('j, 'k, 'a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i))
+  }
 
 }
 
@@ -266,7 +333,19 @@ class Problem019Spec extends FlatSpec {
 /* Problem 020 Specification */
 class Problem020Spec extends FlatSpec {
 
-  /* write here */
+  "removeAt" should "fail on empty list" in {
+    intercept[NoSuchElementException] {
+      Problem020.removeAt(0, List())
+    }
+  }
+
+  it should "returns the list without the first value" in {
+    assert(Problem020.removeAt(0, List('a, 'b, 'c)) === (List('b, 'c), 'a))
+  }
+
+  it should "returns the list without the second value" in {
+    assert(Problem020.removeAt(1, List('a, 'b, 'c)) === (List('a, 'c), 'b))
+  }
 
 }
 
@@ -274,7 +353,21 @@ class Problem020Spec extends FlatSpec {
 /* Problem 021 Specification */
 class Problem021Spec extends FlatSpec {
 
-  /* write here */
+  "insertAt" should "fail on empty list" in {
+    intercept[NoSuchElementException] {
+      Problem021.insertAt(10, 'new, List())
+    }
+  }
+
+  it should "returns the list with the new value for head" in {
+    assert(Problem021.insertAt(0, 'new, List('a, 'b, 'c)) ===
+      List('new, 'a, 'b, 'c))
+  }
+
+  it should "returns the list with the new value at the second pos" in {
+    assert(Problem021.insertAt(1, 'new, List('a, 'b, 'c)) ===
+      List('a, 'new, 'b, 'c))
+  }
 
 }
 
@@ -282,7 +375,13 @@ class Problem021Spec extends FlatSpec {
 /* Problem 022 Specification */
 class Problem022Spec extends FlatSpec {
 
-  /* write here */
+  "range" should "returns empty list when min > max" in {
+    assert(Problem022.range(1, 0) == Nil)
+  }
+
+  it should "returns the range between min and max inclusive" in {
+    assert(Problem022.range(4, 9) == List(4, 5, 6, 7, 8, 9))
+  }
 
 }
 
@@ -290,7 +389,12 @@ class Problem022Spec extends FlatSpec {
 /* Problem 023 Specification */
 class Problem023Spec extends FlatSpec {
 
-  /* write here */
+  "randomSelect" should "returns value existing on the list" in {
+    val l = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h)
+    val select = Problem023.randomSelect(3, l)
+    assert(select forall (l contains _))
+    assert(select.length === 3)
+  }
 
 }
 
@@ -298,7 +402,12 @@ class Problem023Spec extends FlatSpec {
 /* Problem 024 Specification */
 class Problem024Spec extends FlatSpec {
 
-  /* write here */
+  "lotto" should "returns n unique values between the range 1 max" in {
+    val lotto = Problem024.lotto(6, 49)
+    assert(lotto forall (x => x >= 1 && x <= 49))
+    assert(lotto.length === 6)
+    assert(lotto.distinct === lotto)
+  }
 
 }
 
@@ -306,7 +415,12 @@ class Problem024Spec extends FlatSpec {
 /* Problem 025 Specification */
 class Problem025Spec extends FlatSpec {
 
-  /* write here */
+  "randomPermut" should "returns a permutation of the list" in {
+    val l = List('a, 'b, 'c, 'd, 'e, 'f)
+    val lperm = Problem025.randomPermut(l)
+    assert(lperm forall (l contains _))
+    assert(l.length === lperm.length)
+  }
 
 }
 

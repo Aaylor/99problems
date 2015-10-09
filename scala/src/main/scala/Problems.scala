@@ -148,7 +148,11 @@ object Problem011 {
 /* Problem 012 */
 object Problem012 {
 
-  /* write here */
+  def decode[A](l : List[Tuple2[Int, A]]) : List[A] = l match {
+    case Nil => Nil
+    case (count, v) :: tail if count == 1 => v :: decode(tail)
+    case (count, v) :: tail => v :: decode((count - 1, v) :: tail)
+  }
 
 }
 
@@ -156,7 +160,17 @@ object Problem012 {
 /* Problem 013 */
 object Problem013 {
 
-  /* write here */
+  def encodeDirect[A](l : List[A]) : List[Tuple2[Int, A]] = l match {
+    case Nil => Nil
+    case v :: tail =>
+      encodeDirect(tail) match {
+        case Nil => List((1, v))
+        case (code, value) :: xs if value == v => (code + 1, value) :: xs
+        case l => (1, v) :: l
+      }
+      // val encodedList = encodeDirect(tail)
+
+  }
 
 }
 
@@ -164,7 +178,10 @@ object Problem013 {
 /* Problem 014 */
 object Problem014 {
 
-  /* write here */
+  def duplicate[A](l : List[A]) : List[A] = l match {
+    case Nil => Nil
+    case x :: xs => x :: x :: duplicate(xs)
+  }
 
 }
 
@@ -172,7 +189,13 @@ object Problem014 {
 /* Problem 015 */
 object Problem015 {
 
-  /* write here */
+  def duplicateN[A](n : Int, l : List[A]) : List[A] = l match {
+    case Nil => Nil
+    case x :: xs =>
+      def f(m : Int) : List[A] =
+        if (m == 0) duplicateN(n, xs) else x :: f(m - 1)
+      f(n)
+  }
 
 }
 
@@ -180,7 +203,14 @@ object Problem015 {
 /* Problem 016 */
 object Problem016 {
 
-  /* write here */
+  def drop[A](n : Int, l : List[A]) : List[A] = {
+    def aux(current : Int, l : List[A]) : List[A] = l match {
+      case Nil => Nil
+      case _ :: xs if current == 1 => aux(n, xs)
+      case x :: xs => x :: aux(current - 1, xs)
+    }
+    aux(n, l)
+  }
 
 }
 
@@ -188,7 +218,15 @@ object Problem016 {
 /* Problem 017 */
 object Problem017 {
 
-  /* write here */
+  def split[A](n : Int, l : List[A]) = {
+    def aux(current : Int, acc : List[A], l : List[A])
+        : Tuple2[List[A], List[A]] = l match {
+      case Nil => (acc.reverse, Nil)
+      case l if current == 0 => (acc.reverse, l)
+      case x :: xs => aux(current - 1, x :: acc, xs)
+    }
+    aux(n, Nil, l)
+  }
 
 }
 
@@ -196,7 +234,9 @@ object Problem017 {
 /* Problem 018 */
 object Problem018 {
 
-  /* write here */
+  def slice[A](min : Int, max : Int, l : List[A]) : List[A] = {
+    for ((x, cnt) <- l.zipWithIndex if (cnt >= min && cnt < max)) yield x
+  }
 
 }
 
@@ -204,7 +244,11 @@ object Problem018 {
 /* Problem 019 */
 object Problem019 {
 
-  /* write here */
+  def rotate[A](n : Int, l : List[A]) : List[A] = {
+    val where = if (n < 0) l.length + n else n
+    val (head, tail) = l splitAt where
+    tail ::: head
+  }
 
 }
 
@@ -212,7 +256,13 @@ object Problem019 {
 /* Problem 020 */
 object Problem020 {
 
-  /* write here */
+  def removeAt[A](where : Int, l : List[A]) : Tuple2[List[A], A] = l match {
+    case Nil => throw new NoSuchElementException
+    case x :: tail if where == 0 => (tail, x)
+    case x :: tail =>
+      val (l, ret) = removeAt(where - 1, tail)
+      (x :: l, ret)
+  }
 
 }
 
@@ -220,7 +270,12 @@ object Problem020 {
 /* Problem 021 */
 object Problem021 {
 
-  /* write here */
+  def insertAt[A](where : Int, what : A, l : List[A]) : List[A] = l match {
+    case Nil if where > 0 => throw new NoSuchElementException
+    case Nil => List(what)
+    case xs if where == 0 => what :: xs
+    case x :: xs => x :: insertAt(where - 1, what, xs)
+  }
 
 }
 
@@ -228,7 +283,8 @@ object Problem021 {
 /* Problem 022 */
 object Problem022 {
 
-  /* write here */
+  def range(min : Int, max : Int) : List[Int] =
+    if (min > max) Nil else min :: range(min + 1, max)
 
 }
 
@@ -236,7 +292,17 @@ object Problem022 {
 /* Problem 023 */
 object Problem023 {
 
-  /* write here */
+  def randomSelect[A](nb : Int, l : List[A]) = {
+    def aux(nbLeft : Int, l : List[A], length : Int,
+      generator : java.util.Random) : List[A] = {
+      if (nbLeft == 0) Nil
+      else {
+        val (ls, x) = Problem020.removeAt(generator nextInt length, l)
+        x :: aux(nbLeft - 1, ls, length - 1, generator)
+      }
+    }
+    aux(nb, l, l.length, new java.util.Random)
+  }
 
 }
 
@@ -244,7 +310,8 @@ object Problem023 {
 /* Problem 024 */
 object Problem024 {
 
-  /* write here */
+  def lotto(nb : Int, max : Int) =
+    Problem023.randomSelect(nb, Problem022.range(1, max))
 
 }
 
@@ -252,7 +319,9 @@ object Problem024 {
 /* Problem 025 */
 object Problem025 {
 
-  /* write here */
+  def randomPermut[A](l : List[A]) = {
+    Problem023.randomSelect(l.length, l)
+  }
 
 }
 
