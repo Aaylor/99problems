@@ -588,8 +588,49 @@ class Problem045Spec extends FlatSpec {
 /* Problem 046 Specification */
 class Problem046Spec extends FlatSpec {
 
-  /* write here */
+  import Problem046._
 
+  "not" should "returns the inverse boolean" in {
+    assert(not(true)  === false)
+    assert(not(false) === true)
+  }
+
+  "and" should "returns the value of the logical and" in {
+    assert(and(true, true) === true)
+    assert(and(true, false) === and(false, true) === and(false, false) === false)
+  }
+
+  "or" should "returns the value of the logical or" in {
+    assert(or(true, true) === or(true, false) === or(false, true) === true)
+    assert(or(false, false) === false)
+  }
+
+  "nand" should "returns the inverse value of the logical and" in {
+    assert(nand(true, true) === false)
+    assert(nand(true, false) === nand(false, true) === nand(false, false) === true)
+  }
+
+  "nor" should "returns the inverse value of the logical or" in {
+    assert(nor(true, true) === nor(true, false) === nor(false, true) === false)
+    assert(nor(false, false) === true)
+  }
+
+  "xor" should "returns the value of the logical xor" in {
+    assert(xor(true, false)  === xor(false, true) === true)
+    assert(xor(false, false) === false)
+    assert(xor(true, true)   === false)
+  }
+
+  "impl" should "returns the value of the logical ->" in {
+    assert(impl(false, true) === impl(false, false) === impl(true, true) === true)
+    assert(impl(true, false) === false)
+  }
+
+  "equ" should "returns the logical value of equ" in {
+    assert(equ(true, true)  === equ(false, false) === true)
+    assert(equ(false, true) === false)
+    assert(equ(true, false) === false)
+  }
 }
 
 

@@ -329,7 +329,17 @@ object Problem025 {
 /* Problem 026 */
 object Problem026 {
 
-  /* write here */
+  def flatMapSublists[A,B](ls: List[A])(f: (List[A]) => List[B]): List[B] =
+    ls match {
+      case Nil => Nil
+      case sublist @ (_ :: tail) => f(sublist) ::: flatMapSublists(tail)(f)
+    }
+
+  def combinations[A](n: Int, ls: List[A]): List[List[A]] =
+    if (n == 0) List(Nil)
+    else flatMapSublists(ls) { sl =>
+      combinations(n - 1, sl.tail) map {sl.head :: _}
+    }
 
 }
 
@@ -489,7 +499,40 @@ object Problem045 {
 /* Problem 046 */
 object Problem046 {
 
-  /* write here */
+  def not(a : Boolean) = a match {
+    case true  => false
+    case false => true
+  }
+
+  def and(a : Boolean, b : Boolean) = (a, b) match {
+    case (true, true) => true
+    case _ => false
+  }
+
+  def or(a : Boolean, b : Boolean) = (a, b) match {
+    case (false, false) => false
+    case _ => true
+  }
+
+  def nand(a : Boolean, b : Boolean) = not(and(a, b))
+
+  def nor(a : Boolean, b : Boolean) = not(or(a, b))
+
+  def xor(a : Boolean, b : Boolean) = not(equ(a, b))
+
+  def impl(a : Boolean, b : Boolean) = or(not(a), b)
+
+  def equ(a : Boolean, b : Boolean) = or(and(a, b), and(not(a), not(b)))
+
+  def table2(f : (Boolean, Boolean) => Boolean) = {
+    println("  A     B   Result")
+    for {
+      a <- List(false, true);
+      b <- List(false, true)
+    } {
+      printf("%-6b%-6b%-6b\n", a, b, f(a, b))
+    }
+  }
 
 }
 
@@ -497,7 +540,45 @@ object Problem046 {
 /* Problem 047 */
 object Problem047 {
 
-  /* write here */
+  def not(a : Boolean) = a match {
+    case true  => false
+    case false => true
+  }
+
+  class Logic(a : Boolean) {
+    import Logic._
+
+    def and(b : Boolean) = (a, b) match {
+      case (true, true) => true
+      case _ => false
+    }
+
+    def or(b : Boolean) = (a, b) match {
+      case (false, false) => false
+      case _ => true
+    }
+
+    def nand(b : Boolean) = not(a and b)
+    def nor(b : Boolean)  = not(a or b)
+    def xor(b : Boolean)  = not(a equ b)
+    def impl(b : Boolean) = not(a) or b
+    def equ(b : Boolean)  = (a and b) or (not(a) and not(b))
+  }
+
+  object Logic {
+    import scala.language.implicitConversions
+    implicit def boolean2Logic(b : Boolean) : Logic = new Logic(b)
+  }
+
+  def table2(f : (Boolean, Boolean) => Boolean) = {
+    println("  A     B   Result")
+    for {
+      a <- List(false, true);
+      b <- List(false, true)
+    } {
+      printf("%-6b%-6b%-6b\n", a, b, f(a, b))
+    }
+  }
 
 }
 
